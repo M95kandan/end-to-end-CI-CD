@@ -107,7 +107,7 @@
       ignore_errors: yes
     - name: Copy Calico YAML to Kubernetes Master
       copy:
-        src: "/root/ansible/calico.yaml"
+        src: "./calico.yaml"
         dest: "/home/ec2-user/calico.yaml"
         owner: "{{ ansible_ssh_user }}"
         group: "{{ ansible_ssh_user }}"
@@ -131,7 +131,7 @@
     - name: Fetch join command file to Ansible controller node
       fetch:
         src: "./k8s_join_script.sh"
-        dest: "/root/ansible/k8s_join_script.sh"
+        dest: "./k8s_join_script.sh"
         flat: yes
       vars:
         mode: '0755'  # Set the executable permission
@@ -220,7 +220,7 @@
 
     - name: Copy join command file to k8s_nodes group
       copy:
-        src: "/root/ansible/k8s_join_script.sh"
+        src: "./k8s_join_script.sh"
         dest: "/home/ec2-user/k8s_join_script.sh"
         owner: "{{ ansible_ssh_user }}"
         group: "{{ ansible_ssh_user }}"
@@ -231,3 +231,29 @@
       command: "/home/ec2-user/k8s_join_script.sh"
       with_items: "{{ groups['k8s_nodes'] }}"
       ignore_errors: yes  # Ignore errors during join, as some nodes may already be joined
+
+- name: Apply Deployment and Service Files on Kubernetes Master
+  hosts: k8s_master
+  become: yes
+  tasks:
+    - name: Copy deployment-file.yaml to Kubernetes Master
+      copy:
+        src: "./depolyment.yml"
+        dest: "/home/ec2-user/depolyment.yml"
+        owner: "{{ ansible_ssh_user }}"
+        group: "{{ ansible_ssh_user }}"
+        mode: '0644'
+
+    - name: Apply deployment-file.yaml
+      command: kubectl apply -f /home/ec2-user/depolyment.yml
+
+    - name: Copy service-file.yaml to Kubernetes Master
+      copy:
+        src: "./service.yml"
+        dest: "/home/ec2-user/service.yml"
+        owner: "{{ ansible_ssh_user }}"
+        group: "{{ ansible_ssh_user }}"
+        mode: '0644'
+
+    - name: Apply service-file.yaml
+      command: kubectl apply -f /home/ec2-user/service.yml
