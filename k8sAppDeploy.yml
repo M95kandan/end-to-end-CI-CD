@@ -13,13 +13,4 @@
     - name: Apply deployment-file.yaml
       command: kubectl apply -f /home/ec2-user/depolyment.yml
 
-    - name: Copy service-file.yaml to Kubernetes Master
-      copy:
-        src: "./service.yml"
-        dest: "/home/ec2-user/service.yml"
-        owner: "{{ ansible_ssh_user }}"
-        group: "{{ ansible_ssh_user }}"
-        mode: '0644'
-
-    - name: Apply service-file.yaml
-      command: kubectl apply -f /home/ec2-user/service.yml
+ 
