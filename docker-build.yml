@@ -19,10 +19,17 @@
         name: docker
         state: started
 
-    - name: Copy Dockerfile from Jenkins workspace to the temporary directory
-      copy:
-        src: "/home/ec2-user/jenkins-IAC/workspace/CICD/Dockerfile"
-        dest: "/home/ec2-user/Dockerfile"
+    - name: Install git package
+      yum:
+        name: git
+        state: present
+
+    - name: Clone repository
+      git:
+        repo: "https://github.com/M95kandan/end-to-end-CI-CD.git"
+        dest: "/home/ec2-user/end-to-end-CI-CD"
+        clone: yes
+
 
     - name: Build and tag Docker image
       shell: docker buildx build --ulimit nofile=1024000:1024000 -t {{ dockerhub_repository }}:{{ item }} /home/ec2-user/Dockerfile 
