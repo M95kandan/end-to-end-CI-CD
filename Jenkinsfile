@@ -4,7 +4,7 @@ pipeline {
     environment {
         GITHUB_REPO_URL = "https://github.com/M95kandan/end-to-end-CI-CD"
         DOCKERHUB_USERNAME = "m95kandan"
-        DOCKERHUB_PASSWORD = "M#95kandan"
+        DOCKERHUB_PASSWORD = "Enter_docker_pass"
         DOCKERHUB_REPOSITORY = "m95kandan/website"
         BUILD_NUMBER_TAG = "${BUILD_NUMBER}"
         RETRY_COUNT = 3
