@@ -32,6 +32,6 @@
 
 
     - name: Build and tag Docker image
-      shell: docker buildx build --ulimit nofile=1024000:1024000 -t {{ dockerhub_repository }}:{{ item }} /home/ec2-user/Dockerfile 
+      shell: docker buildx build --ulimit nofile=1024000:1024000 -t {{ dockerhub_repository }}:{{ item }} /home/ec2-user/end-to-end-CI-CD
       become: yes
       loop: "{{ docker_image_tags }}"
