@@ -60,6 +60,16 @@ pipeline {
             }
         }
 
+        stage('Notify Approval') {
+            steps {
+                script {
+                    mail to: 'manikandanprakash.p@gmail.com', subject: 'Pipeline waiting for Approval?', body: '''Hi,
+
+This is the mail for getting approved to deploy into production'''
+                }
+            }
+        }
+
         stage('Approved') {
             steps {
                 script {
@@ -82,8 +92,7 @@ pipeline {
                     retry(RETRY_COUNT) {
                         ansiblePlaybook(
                             playbook: 'K8sMasterSlave.yml',
-                            inventory: 'inventory',
-                           
+                            inventory: 'inventory'
                         )
                     }
                 }
@@ -96,12 +105,24 @@ pipeline {
                     retry(RETRY_COUNT) {
                         ansiblePlaybook(
                             playbook: 'k8sAppDeploy.yml',
-                            inventory: 'inventory',
-                           
+                            inventory: 'inventory'
                         )
                     }
                 }
             }
+        }
+    }
+
+
+
+  post {
+        success {
+            emailext body: '''Hi,
+
+Our latest version has launched successfully !!!!
+
+by Best,
+Jenkins ''', subject: 'Pipeline of CICD has run successfully !!!!! ', to: 'manikandanprakash.p@gmail.com'
         }
     }
 }
