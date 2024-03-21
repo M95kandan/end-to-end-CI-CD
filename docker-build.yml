@@ -1,3 +1,13 @@
+---
+- name: Build Docker Image
+  hosts: docker_host
+  become: yes
+
+  vars:
+    docker_image_tags:
+      - "{{ build_number_tag }}"
+      - "latest"
+
   tasks:
     - name: Install Docker package
       yum:
@@ -25,9 +35,7 @@
       become_user: ec2-user
       shell: cd /home/ec2-user/end-to-end-CI-CD
 
-
-
     - name: Build and tag Docker image
-      command: "docker build -t {{ dockerhub_repository }}:{{ item }} /home/ec2-user/end-to-end-CI-CD/Dockerfile "
+      command: "docker build -t {{ dockerhub_repository }}:{{ item }} /home/ec2-user/end-to-end-CI-CD"
       become: yes
       loop: "{{ docker_image_tags }}"
