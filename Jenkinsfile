@@ -111,7 +111,21 @@ This is the mail for getting approved to deploy into production'''
                 }
             }
         }
+          stage('Creating scrvice on Kubernetes') {
+            steps {
+                script {
+                    retry(RETRY_COUNT) {
+                        ansiblePlaybook(
+                            playbook: 'service-playbook.yml',
+                            inventory: 'inventory'
+                        )
+                    }
+                }
+            }
+        }
+    
     }
+    
 
 
 
