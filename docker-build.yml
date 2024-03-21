@@ -21,7 +21,7 @@
 
     - name: Copy Dockerfile from Jenkins workspace to the temporary directory
       copy:
-        src: "/home/ec2-user/jenkins-IAC/workspace/CI-1/Dockerfile"
+        src: "/home/ec2-user/jenkins-IAC/workspace/CICD"
         dest: "/tmp/Dockerfile"
 
     - name: Build and tag Docker image
