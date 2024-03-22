@@ -129,14 +129,27 @@ This is the mail for getting approved to deploy into production'''
 
 
 
-  post {
+ post {
         success {
-            emailext body: '''Hi,
+            emailext body: '''Hi Manikandan,
 
-Our latest version has launched successfully !!!!
+Our latest version has launched successfully!
 
-by Best,
-Jenkins ''', subject: 'Pipeline of CICD has run successfully !!!!! ', to: 'manikandanprakash.p@gmail.com'
+Best regards,
+Jenkins''', 
+            subject: 'Pipeline of CI/CD has run successfully!',
+            to: 'manikandanprakash.p@gmail.com'
+        }
+        
+        failure {
+            emailext body: '''Hi Manikandan,
+
+Unfortunately, the pipeline of CI/CD has failed.
+
+Best regards,
+Jenkins''', 
+            subject: 'Pipeline of CI/CD has failed!',
+            to: 'manikandanprakash.p@gmail.com'
         }
     }
 }
