@@ -4,13 +4,14 @@
   tasks:
     - name: Copy deployment-file.yaml to Kubernetes Master
       copy:
-        src: "./depolyment.yml"
-        dest: "/home/ec2-user/depolyment.yml"
+        src: "./deployment.yml"
+        dest: "/home/ec2-user/deployment.yml"
         owner: "{{ ansible_ssh_user }}"
         group: "{{ ansible_ssh_user }}"
         mode: '0644'
 
     - name: Apply deployment-file.yaml
-      command: kubectl apply -f /home/ec2-user/depolyment.yml
+      command: kubectl apply -f /home/ec2-user/deployment.yml
 
- 
+    - name: Trigger rolling update
+      command: kubectl rollout restart deployment/website-deployment
